@@ -13,21 +13,22 @@ struct LandmarkDetail: View {
     var landmark: Landmark
     
     var landmarkIndex: Int {
-        userData.landmarks.firstIndex(where: {$0.id == landmark.id})!
+        userData.landmarks.firstIndex(where: { $0.id == landmark.id })!
     }
     
     var body: some View {
         VStack {
             MapView(coordinate: landmark.locationCoordinate)
                 .edgesIgnoringSafeArea(.top)
+                .frame(height: 300)
             
             CircleImage(image: landmark.image)
-                .offset(y:-130)
+                .offset(x: 0, y: -130)
                 .padding(.bottom, -130)
             
             VStack(alignment: .leading) {
                 HStack {
-                    Text(landmark.name)
+                    Text(verbatim: landmark.name)
                         .font(.title)
                     
                     Button(action: {
@@ -37,27 +38,31 @@ struct LandmarkDetail: View {
                             Image(systemName: "star.fill")
                                 .foregroundColor(Color.yellow)
                         } else {
-                            Image(systemName: "star.fill")
-                            .foregroundColor(Color.gray)
+                            Image(systemName: "star")
+                                .foregroundColor(Color.gray)
                         }
                     }
                 }
-                HStack {
-                    Text(landmark.park)
+                
+                HStack(alignment: .top) {
+                    Text(verbatim: landmark.park)
                         .font(.subheadline)
                     Spacer()
-                    Text(landmark.state)
+                    Text(verbatim: landmark.state)
                         .font(.subheadline)
                 }
             }
             .padding()
+            
+            Spacer()
         }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct LandmarkDetail_Preview: PreviewProvider {
     static var previews: some View {
-        LandmarkDetail(landmark: landmarkData[0])
-            .environmentObject(UserData())
+        let userData = UserData()
+        return LandmarkDetail(landmark: userData.landmarks[0])
+            .environmentObject(userData)
     }
 }

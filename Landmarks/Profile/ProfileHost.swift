@@ -28,15 +28,15 @@ struct ProfileHost: View {
                 EditButton()
             }
             if self.mode?.wrappedValue == .inactive {
-                ProfileSummary(profile: draftProfile)
+                ProfileSummary(profile: userData.profile)
             } else {
                 ProfileEditor(profile: $draftProfile)
                     .onAppear {
-                    self.draftProfile = self.userData.profile
-                }
-                .onDisappear {
-                    self.userData.profile = self.draftProfile
-                }
+                        self.draftProfile = self.userData.profile
+                    }
+                    .onDisappear {
+                        self.userData.profile = self.draftProfile
+                    }
             }
         }
         .padding()

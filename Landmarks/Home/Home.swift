@@ -9,16 +9,19 @@
 import SwiftUI
 
 struct CategoryHome: View {
-    var categores: [String: [Landmark]] {
+    var categories: [String: [Landmark]] {
         Dictionary(
             grouping: landmarkData,
             by: { $0.category.rawValue }
         )
     }
-    
+
     var featured: [Landmark] {
         landmarkData.filter { $0.isFeatured }
     }
+    
+    @State var showingProfile = false
+    @EnvironmentObject var userData: UserData
     
     var profileButton: some View {
         Button(action: { self.showingProfile.toggle() }) {
@@ -29,22 +32,23 @@ struct CategoryHome: View {
         }
     }
     
-    @State var showingProfile = false
-    @EnvironmentObject var userData: UserData
-    
     var body: some View {
         NavigationView {
             List {
                 FeaturedLandmarks(landmarks: featured)
-                .scaledToFill()
-                .frame(height: 200)
-                .clipped()
-                .listRowInsets(EdgeInsets())
+                    .scaledToFill()
+                    .frame(height: 200)
+                    .clipped()
+                    .listRowInsets(EdgeInsets())
                 
-                ForEach(categores.keys.sorted(), id: \.self) { key in
-                    CategoryRow(categoryName: key, items: self.categores[key]!)
+                ForEach(categories.keys.sorted(), id: \.self) { key in
+                    CategoryRow(categoryName: key, items: self.categories[key]!)
                 }
                 .listRowInsets(EdgeInsets())
+                
+                NavigationLink(destination: LandmarkList()) {
+                    Text("See All")
+                }
             }
             .navigationBarTitle(Text("Featured"))
             .navigationBarItems(trailing: profileButton)
@@ -66,5 +70,6 @@ struct FeaturedLandmarks: View {
 struct CategoryHome_Previews: PreviewProvider {
     static var previews: some View {
         CategoryHome()
+            .environmentObject(UserData())
     }
 }
