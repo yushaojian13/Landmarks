@@ -1,14 +1,14 @@
-//
-//  Data.swift
-//  Landmarks
-//
-//  Created by Shawn Yu on 12/29/19.
-//  Copyright © 2019 Yu Shaojian. All rights reserved.
-//
+/*
+See LICENSE folder for this sample’s licensing information.
 
-import UIKit
-import SwiftUI
+Abstract:
+Helpers for loading images and data.
+*/
+
+import Foundation
 import CoreLocation
+import SwiftUI
+import ImageIO
 
 let landmarkData: [Landmark] = load("landmarkData.json")
 let features = landmarkData.filter { $0.isFeatured }
@@ -18,8 +18,8 @@ func load<T: Decodable>(_ filename: String) -> T {
     let data: Data
     
     guard let file = Bundle.main.url(forResource: filename, withExtension: nil)
-        else {
-            fatalError("Couldn't find \(filename) in main bundle.")
+    else {
+        fatalError("Couldn't find \(filename) in main bundle.")
     }
     
     do {
@@ -68,3 +68,4 @@ final class ImageStore {
         return images.index(forKey: name)!
     }
 }
+
